@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>human</module>
+        <module>civil_registry</module>
     </modules>
 
     <properties>
