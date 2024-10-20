@@ -1,10 +1,11 @@
 package org.javaacademy;
 
-import lombok.experimental.UtilityClass;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-@UtilityClass
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class HumanUtil {
-    public void genderOppositeCheck(Human human1, Human human2) {
+    public static void genderOppositeCheck(Human human1, Human human2) {
         if (human1.isMale() == human2.isMale()) {
             throw new RuntimeException("Родителями не могут быть однополые люди.");
         }
