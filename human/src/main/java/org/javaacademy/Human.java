@@ -4,10 +4,13 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @ToString(onlyExplicitlyIncluded = true)
+@Getter
 public class Human {
     @NonNull
     @ToString.Include
@@ -21,7 +24,7 @@ public class Human {
     final boolean isMale;
     Human father;
     Human mother;
-    List<Human> children;
+    Set<Human> children;
 
     @Builder
     public Human(@NonNull String firstName, @NonNull String middleName, @NonNull String lastName, boolean isMale) {
@@ -36,17 +39,28 @@ public class Human {
         if (parent1.isMale) {
             this.father = parent1;
             this.mother = parent2;
-            father.children.add(this);
-            mother.children.add(this);
+            addChildToParents(father, mother,this);
+        } else {
+            this.father = parent2;
+            this.mother = parent1;
+            addChildToParents(this.father, this.mother,this);
         }
     }
 
-    public Human makeChild(String firstName, String middleName, String lastName, Human parent2) {
+    public Set<Human> getChildren() {
+        if (children == null) {
+            throw new RuntimeException("У человека нет детей.");
+        }
+        return children;
+    }
+
+    public Human makeChild(String firstName, String middleName, String lastName, boolean isMale, Human parent2) {
         genderCheck(this, parent2);
         Human newHuman = Human.builder()
                 .firstName(firstName)
                 .middleName(middleName)
                 .lastName(lastName)
+                .isMale(isMale)
                 .build();
         newHuman.setParents(this, parent2);
         return newHuman;
@@ -58,7 +72,22 @@ public class Human {
         }
     }
 
+    public static void addChildToParents(Human parent1, Human parent2, Human child) {
+        if (parent1.children != null) {
+            parent1.children.add(child);
+        } else {
+            parent1.children = new HashSet<>(List.of(child));
+        }
+
+        if (parent2.children != null) {
+            parent2.children.add(child);
+        } else {
+            parent2.children = new HashSet<>(List.of(child));
+        }
+
+    }
+
     public String getFullName() {
-        return String.format("ФИО: %s %s %s", firstName, middleName, lastName);
+        return String.format("Имя Отчество Фамилия: %s %s %s", firstName, middleName, lastName);
     }
 }
