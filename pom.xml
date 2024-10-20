@@ -7,7 +7,9 @@
     <groupId>org.javaacademy</groupId>
     <artifactId>city</artifactId>
     <version>1.0.0</version>
+
     <packaging>pom</packaging>
+
     <modules>
         <module>human</module>
     </modules>
@@ -63,7 +65,6 @@
                             </execution>
                         </executions>
                     </plugin>
-<!--                    !!! ДОБАВИТЬ ПЛАГИН СБОРКИ-->
                 </plugins>
             </build>
         </profile>
@@ -88,7 +89,6 @@
                             </execution>
                         </executions>
                     </plugin>
-<!--                    !!! ДОБАВИТЬ ПЛАГИН СБОРКИ-->
                 </plugins>
             </build>
         </profile>
