@@ -20,6 +20,9 @@
         <lombok.version>1.18.34</lombok.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <commons-collections4.version>4.4</commons-collections4.version>
+        <lombok.version>1.18.34</lombok.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
     </properties>
 
@@ -47,24 +50,39 @@
         <profile>
             <id>prom</id>
             <build>
-                <finalName>prom</finalName>
+                <finalName>   !!! ВСТАВИТЬ ИМЯ ФАЙЛА !!!   </finalName>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-checkstyle-plugin</artifactId>
-                        <version>${maven-checkstyle-plugin.version}</version>
+                        <artifactId>maven-jar-plugin</artifactId>
                         <configuration>
-                            <configLocation>google_checks.xml</configLocation>
-                            <consoleOutput>true</consoleOutput>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <mainClass>   !!! ВСТАВИТЬ РАННЕР !!!   </mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <configuration>
+                            <configLocation>sun_checks.xml</configLocation>
+                            <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
+                            <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
+                            <failsOnError>true</failsOnError>
                         </configuration>
                         <executions>
                             <execution>
-                                <phase>package</phase>
-                                <goals><goal>check</goal></goals>
+                                <phase>process-sources</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>
-<!--                    !!! ДОБАВИТЬ ПЛАГИН СБОРКИ-->
                 </plugins>
             </build>
         </profile>
@@ -72,24 +90,27 @@
         <profile>
             <id>test</id>
             <build>
-                <finalName>test</finalName>
+                <finalName>   !!! ВСТАВИТЬ ИМЯ ФАЙЛА !!!   </finalName>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-checkstyle-plugin</artifactId>
-                        <version>${maven-checkstyle-plugin.version}</version>
+                        <version>3.0.0</version>
                         <configuration>
-                            <configLocation>google_checks.xml</configLocation>
-                            <consoleOutput>true</consoleOutput>
+                            <configLocation>sun_checks.xml</configLocation>
+                            <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
+                            <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
+                            <failsOnError>true</failsOnError>
                         </configuration>
                         <executions>
                             <execution>
-                                <phase>package</phase>
-                                <goals><goal>check</goal></goals>
+                                <phase>process-sources</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>
-<!--                    !!! ДОБАВИТЬ ПЛАГИН СБОРКИ-->
                 </plugins>
             </build>
         </profile>
