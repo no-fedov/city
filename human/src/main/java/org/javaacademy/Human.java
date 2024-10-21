@@ -1,7 +1,6 @@
 package org.javaacademy;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
@@ -11,10 +10,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.javaacademy.HumanUtil.genderOppositeCheck;
+import static org.javaacademy.HumanUtil.*;
 
 @Getter
-@Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @ToString(onlyExplicitlyIncluded = true)
 public class Human {
@@ -36,8 +34,7 @@ public class Human {
 
     Human mother;
 
-    @Builder.Default
-    List<Human> children = new ArrayList<>();
+    final List<Human> children = new ArrayList<>();
 
     public Human(@NonNull String name,
                  @NonNull String surname,
@@ -49,21 +46,8 @@ public class Human {
         this.isMale = isMale;
     }
 
-    private Human(String name,
-                  String surname,
-                  String patronymic,
-                  boolean isMale,
-                  Human father,
-                  Human mother,
-                  List<Human> children) {
-        this(name, surname, patronymic, isMale);
-        this.father = father;
-        this.mother = mother;
-        this.children = children;
-    }
-
-    @NonNull
-    public void setParents(Human parent1, Human parent2) {
+    public void setParents(@NonNull Human parent1,
+                           @NonNull Human parent2) {
         genderOppositeCheck(parent1, parent2);
         if (parent1.isMale) {
             this.father = parent1;
@@ -75,25 +59,23 @@ public class Human {
         addChildToParents(father, mother, this);
     }
 
-    @NonNull
-    public Human makeChild(String name,
-                           String surname,
-                           String patronymic,
+    public Human makeChild(@NonNull String name,
+                           @NonNull String surname,
+                           @NonNull String patronymic,
                            boolean isMale,
-                           Human otherParent) {
+                           @NonNull Human otherParent) {
         genderOppositeCheck(this, otherParent);
-        Human newHuman = Human.builder()
-                .name(name)
-                .surname(surname)
-                .patronymic(patronymic)
-                .isMale(isMale)
-                .build();
+        Human newHuman = new Human(name, surname, patronymic, isMale);
         newHuman.setParents(this, otherParent);
         return newHuman;
     }
 
     public String getFullName() {
         return String.format("ФИО: %s %s %s", surname, name, patronymic);
+    }
+
+    public List<Human> getChildren() {
+        return new ArrayList<>(children);
     }
 
     private void addChildToParents(Human parent1,
