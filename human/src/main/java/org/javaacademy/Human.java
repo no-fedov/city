@@ -33,8 +33,10 @@ public class Human {
         this.isMale = isMale;
     }
 
+    @NonNull
     public Human makeChild(String firstName, String middleName, String lastName, boolean isMale, Human parent2) {
-        genderCheck(this, parent2);
+
+        HumanUtil.genderOppositeCheck(this, parent2);
         Human newHuman = Human.builder()
                 .firstName(firstName)
                 .middleName(middleName)
@@ -46,7 +48,7 @@ public class Human {
     }
 
     private void setParents(Human parent1, Human parent2) {
-        genderCheck(parent1, parent2);
+        HumanUtil.genderOppositeCheck(this, parent2);
         if (parent1.isMale) {
             this.father = parent1;
             this.mother = parent2;
@@ -54,18 +56,13 @@ public class Human {
             this.father = parent2;
             this.mother = parent1;
         }
-        addChildToParents(father, mother,this);
+        addChildToParents(father, mother, this);
     }
 
+    @NonNull
     private static void addChildToParents(Human parent1, Human parent2, Human child) {
         parent1.children.add(child);
         parent2.children.add(child);
-    }
-
-    public static void genderCheck(Human human1, Human human2) {
-        if (human1.isMale == human2.isMale) {
-            throw new RuntimeException("Родителями не могут быть однополые люди.");
-        }
     }
 
     public String getFullName() {
