@@ -1,6 +1,7 @@
 package org.javaacademy;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -11,11 +12,18 @@ import java.util.List;
 @Getter
 @ToString
 public class CivilActionRecord {
+    @NonNull
     private Date actionDate;
+
+    @NonNull
     private String actionType;
+
+    @NonNull
     private List<Citizen> involvedCitizens;
 
-    public CivilActionRecord(Date actionDate, String actionType, List<Citizen> involvedCitizens) {
+    public CivilActionRecord(@NonNull Date actionDate,
+                             @NonNull String actionType,
+                             @NonNull List<Citizen> involvedCitizens) {
         this.actionDate = actionDate;
         this.actionType = actionType;
         this.involvedCitizens = involvedCitizens;
