@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
 import java.util.Set;
+import static org.javaacademy.HumanUtil.*;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
@@ -33,10 +34,9 @@ public class Human {
         this.isMale = isMale;
     }
 
-    @NonNull
-    public Human makeChild(String firstName, String middleName, String lastName, boolean isMale, Human parent2) {
-
-        HumanUtil.genderOppositeCheck(this, parent2);
+    public Human makeChild(String firstName, String middleName, String lastName, boolean isMale,
+                           Human parent2) {
+        genderOppositeCheck(this, parent2);
         Human newHuman = Human.builder()
                 .firstName(firstName)
                 .middleName(middleName)
@@ -48,7 +48,7 @@ public class Human {
     }
 
     private void setParents(Human parent1, Human parent2) {
-        HumanUtil.genderOppositeCheck(this, parent2);
+        genderOppositeCheck(this, parent2);
         if (parent1.isMale) {
             this.father = parent1;
             this.mother = parent2;
