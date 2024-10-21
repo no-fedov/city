@@ -1,9 +1,8 @@
 package org.javaacademy;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@UtilityClass
 public class HumanUtil {
     public static void genderOppositeCheck(Human human1, Human human2) {
         if (human1.isMale() == human2.isMale()) {
