@@ -1,6 +1,6 @@
 package org.javaacademy;
 
-public class Runner {
+public class RunnerProm {
     public static void main(String[] args) {
 
     }

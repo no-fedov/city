@@ -7,11 +7,15 @@ import lombok.Setter;
 @Getter
 public class Citizen extends Human {
     @Setter
+    @NonNull
     private MaritalStatus maritalStatus;
     private String spouseName;
 
-    public Citizen(@NonNull String firstName, @NonNull String middleName, @NonNull String lastName,
-                   boolean isMale, MaritalStatus maritalStatus) {
+    public Citizen(@NonNull String firstName,
+                   @NonNull String middleName,
+                   @NonNull String lastName,
+                   boolean isMale,
+                   MaritalStatus maritalStatus) {
         super(firstName, middleName, lastName, isMale);
         this.maritalStatus = maritalStatus;
         this.spouseName = null;
