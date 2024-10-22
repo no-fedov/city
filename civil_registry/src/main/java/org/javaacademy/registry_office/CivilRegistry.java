@@ -6,12 +6,15 @@ import org.javaacademy.citizen.Citizen;
 import org.javaacademy.citizen.MaritalStatus;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static org.javaacademy.citizen.MaritalStatus.DIVORCED;
 import static org.javaacademy.citizen.MaritalStatus.MARRIED;
 import static org.javaacademy.registry_office.TypeCivilAction.*;
-import static org.javaacademy.util.CivilUtil.*;
+import static org.javaacademy.util.CivilUtil.countType;
 
 public class CivilRegistry {
     private static final String statisticPattern = "\"Статистика по ЗАГС: %s\n" +
@@ -22,6 +25,7 @@ public class CivilRegistry {
 
     public CivilRegistry(String registryOfficeName) {
         this.registryOfficeName = registryOfficeName;
+        //TODO: компаратор работает, но сравнивать листы по хешкоду такая себе идея подумать как фиксить
         this.listCivilActionRecordsSortedByDate = new TreeSet<>(Comparator.comparing(CivilActionRecord::getActionDate)
                 .thenComparing(CivilActionRecord::getActionType, Enum::compareTo)
                 .thenComparing(CivilActionRecord::getInvolvedCitizens, Comparator.comparingInt(List::hashCode)));
