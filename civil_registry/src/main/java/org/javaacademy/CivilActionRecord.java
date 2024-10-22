@@ -2,13 +2,11 @@ package org.javaacademy;
 
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Setter
 @Getter
 @ToString
 public class CivilActionRecord {
