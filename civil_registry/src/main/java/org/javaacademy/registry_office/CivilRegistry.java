@@ -6,16 +6,17 @@ import org.javaacademy.citizen.Citizen;
 import org.javaacademy.citizen.MaritalStatus;
 
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import static org.javaacademy.citizen.MaritalStatus.DIVORCED;
 import static org.javaacademy.citizen.MaritalStatus.MARRIED;
 import static org.javaacademy.registry_office.TypeCivilAction.*;
+import static org.javaacademy.util.CivilUtil.*;
 
 public class CivilRegistry {
+    private static final String statisticPattern = "\"Статистика по ЗАГС: %s\n" +
+            "\"Дата %s: количество свадеб - %d, количество разводов - %d, количество рождений - %d\"\n";
+
     private String registryOfficeName;
     private Set<CivilActionRecord> listCivilActionRecordsSortedByDate;
 
@@ -80,7 +81,18 @@ public class CivilRegistry {
         }
     }
 
-    public void getStatistic() {
-        // тут работа со стримами и полем listCivilActionRecordsSortedByDate
+    public void getStatistic(@NonNull LocalDate findDate) {
+        List<CivilActionRecord> recordsWithFindDate = listCivilActionRecordsSortedByDate.stream()
+                .filter(e -> e.getActionDate().equals(findDate))
+                .toList();
+
+        long countWedding = countType(recordsWithFindDate, WEDDING_REGISTRATION);
+        long countDivorce = countType(recordsWithFindDate, DIVORCE_REGISTRATION);
+        long countBirth = countType(recordsWithFindDate, BIRTH_REGISTRATION);
+
+        System.out.printf(statisticPattern,
+                this.registryOfficeName,
+                findDate,
+                countWedding, countDivorce, countBirth);
     }
 }
