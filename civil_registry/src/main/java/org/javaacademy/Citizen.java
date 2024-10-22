@@ -2,46 +2,32 @@ package org.javaacademy;
 
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 
 @Getter
+// TODO: установить доступ к полям можно через аннотации ломбок, модуль human написан в таком стиле
 public class Citizen extends Human {
-    @Setter
-    @NonNull
     private MaritalStatus maritalStatus;
-    private String spouseName;
+    private Citizen spouse;
 
-    public Citizen(@NonNull String firstName,
-                   @NonNull String middleName,
-                   @NonNull String lastName,
+    public Citizen(@NonNull String name,
+                   @NonNull String surname,
+                   @NonNull String patronymic,
                    boolean isMale,
-                   MaritalStatus maritalStatus) {
-        super(firstName, middleName, lastName, isMale);
+                   @NonNull MaritalStatus maritalStatus,
+                   Citizen spouse) {
+        super(name, surname, patronymic, isMale);
         this.maritalStatus = maritalStatus;
-        this.spouseName = null;
+        // TODO: сделать проверку если maritalStatus= в браке, то spouse != null
+        // TODO: так же проверить что люди разных полов, если передается соответствующий статус
+        this.spouse = spouse;
     }
 
-    public Citizen(@NonNull String firstName, @NonNull String middleName, @NonNull String lastName,
-                   boolean isMale, MaritalStatus maritalStatus, String spouseName) {
-        super(firstName, middleName, lastName, isMale);
-        this.maritalStatus = maritalStatus;
-        this.spouseName = spouseName;
-    }
-
-    public void setSpouseName(String spouseName) {
-        if (maritalStatus == MaritalStatus.MARRIED) {
-            this.spouseName = spouseName;
-        } else {
-            throw new IllegalArgumentException("Невозможно установить имя супруга(и).");
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "Citizen{" +
-                ", maritalStatus=" + maritalStatus +
-                (maritalStatus == MaritalStatus.MARRIED ?
-                        ", spouseName='" + spouseName + '\'' : "") + '}';
+    // TODO: продумать этот сеттор
+    public void setSpouse(Citizen spouse) {
 
     }
+
+    // TODO: подумать нужны ли тут дургие setters так как в загсе нужно будет людей разводить и женить
+
+    // TODO: подумать как реализовать toString через аннотации ломбок
 }
