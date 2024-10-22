@@ -12,5 +12,4 @@ public class Task {
     String specification;
     boolean status;
     double hours;
-
 }
