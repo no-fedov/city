@@ -2,6 +2,7 @@ package org.javaacademy;
 
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Getter
 @ToString
+@Setter
 public class CivilActionRecord {
     @NonNull
     private LocalDate actionDate;
