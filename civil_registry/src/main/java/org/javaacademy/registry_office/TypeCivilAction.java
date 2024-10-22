@@ -1,4 +1,4 @@
-package org.javaacademy;
+package org.javaacademy.registry_office;
 
 public enum TypeCivilAction {
     BIRTH_REGISTRATION,

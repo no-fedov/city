@@ -1,6 +1,6 @@
 package org.javaacademy;
 
-public class Runner {
+public class RunnerTest {
     public static void main(String[] args) {
 
     }

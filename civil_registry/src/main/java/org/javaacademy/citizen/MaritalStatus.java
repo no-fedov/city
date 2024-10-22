@@ -1,4 +1,4 @@
-package org.javaacademy;
+package org.javaacademy.citizen;
 
 public enum MaritalStatus {
     SINGLE,
