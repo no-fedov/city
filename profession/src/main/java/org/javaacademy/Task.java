@@ -10,6 +10,6 @@ import lombok.experimental.FieldDefaults;
 @Setter
 public class Task {
     String specification;
-    boolean status;
+    boolean isSolved;
     double hours;
 }
