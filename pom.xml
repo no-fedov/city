@@ -13,6 +13,7 @@
     <modules>
         <module>human</module>
         <module>civil_registry</module>
+        <module>profession</module>
     </modules>
 
     <properties>
