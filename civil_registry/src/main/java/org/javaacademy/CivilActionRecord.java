@@ -5,6 +5,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -13,16 +14,16 @@ import java.util.List;
 @ToString
 public class CivilActionRecord {
     @NonNull
-    private Date actionDate;
+    private LocalDate actionDate;
 
     @NonNull
-    private String actionType;
+    private TypeCivilAction actionType;
 
     @NonNull
     private List<Citizen> involvedCitizens;
 
-    public CivilActionRecord(@NonNull Date actionDate,
-                             @NonNull String actionType,
+    public CivilActionRecord(@NonNull LocalDate actionDate,
+                             @NonNull TypeCivilAction actionType,
                              @NonNull List<Citizen> involvedCitizens) {
         this.actionDate = actionDate;
         this.actionType = actionType;
