@@ -1,9 +1,18 @@
 package org.javaacademy;
 
+
+import lombok.NonNull;
+
+import java.time.LocalDate;
 import java.util.Comparator;
-import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
+import static org.javaacademy.MaritalStatus.DIVORCED;
+import static org.javaacademy.MaritalStatus.MARRIED;
+import static org.javaacademy.TypeCivilAction.DIVORCE_REGISTRATION;
+import static org.javaacademy.TypeCivilAction.WEDDING_REGISTRATION;
 
 public class CivilRegistry {
     private String registryOfficeName;
@@ -11,24 +20,66 @@ public class CivilRegistry {
 
     public CivilRegistry(String registryOfficeName) {
         this.registryOfficeName = registryOfficeName;
-        this.listCivilActionRecordsSortedByDate = new TreeSet<>(Comparator.comparing(CivilActionRecord::getActionDate));
+        this.listCivilActionRecordsSortedByDate = new TreeSet<>(Comparator.comparing(CivilActionRecord::getActionDate)
+                .thenComparing(CivilActionRecord::getActionType, Enum::compareTo)
+                .thenComparing(CivilActionRecord::getInvolvedCitizens, Comparator.comparingInt(List::hashCode)));
     }
 
     // TODO: 3.4.1 Рождение ребенка - передается новорожденный, отец, мать + дата регистрации рождения.
     //  Создается запись гражданского действия за дату регистрации.
-    public void birthChild(Citizen child, Citizen mather, Citizen father, Date date) {
+    public void birthChild(Citizen child, Citizen mather, Citizen father, LocalDate date) {
         // сделать проверки, создать запись, добавить в список
     }
 
-    // TODO: 3.4.2 Регистрация свадьбы - передаются мужчина и женщина + дата регистрации свадьбы.
-    //  Меняется семейный статус у мужчины и женщины. Создается запись гражданского действия за дату регистрации.
-    public void registrationWedding(Citizen man, Citizen woman, Date date) {
+    @NonNull
+    public void registrationWedding(Citizen man, Citizen woman, LocalDate date) {
+        if (man.getSpouse() != null && woman.getSpouse() != null) {
+            throw new RuntimeException("Нельзя дважды зарегестрировать брак");
+        }
+
+        if (!man.isMale()) {
+            throw new RuntimeException("Мужчина - не мужчина");
+        }
+
+        if (woman.isMale()) {
+            throw new RuntimeException("Женщина - не женщина");
+        }
+        manageMaritalRelations(man, woman, MARRIED);
+        makeCivilActionRecord(date, WEDDING_REGISTRATION, man, woman);
     }
 
-    // TODO: 3.4.3 Регистрация развода - передаются мужчина и женщина + дата регистрации развода.
-    //  Меняется семейный статус у мужчины и женщины. Создается запись гражданского действия за дату регистрации.
-    public void registrationDivorce(Citizen man, Citizen woman, Date date) {
-        // сдеалть проверку что они были женаты, потом логику выполнять
+    @NonNull
+    public void registrationDivorce(Citizen man, Citizen woman, LocalDate date) {
+        if (!man.getSpouse().equals(woman)) {
+            throw new RuntimeException("Нельзя развеститсь людям которые не состоят в браке");
+        }
+
+        if (!man.isMale()) {
+            throw new RuntimeException("Мужчина - не мужчина");
+        }
+
+        if (woman.isMale()) {
+            throw new RuntimeException("Женщина - не женщина");
+        }
+        manageMaritalRelations(man, woman, DIVORCED);
+        makeCivilActionRecord(date, DIVORCE_REGISTRATION, man, woman);
+    }
+
+    private void manageMaritalRelations(Citizen man,
+                                        Citizen woman,
+                                        MaritalStatus maritalStatus) {
+        man.setSpouse(woman);
+        man.setMaritalStatus(maritalStatus);
+        woman.setSpouse(woman);
+        woman.setMaritalStatus(maritalStatus);
+    }
+
+    private void makeCivilActionRecord(LocalDate date,
+                                       TypeCivilAction civilAction,
+                                       Citizen man,
+                                       Citizen woman) {
+        CivilActionRecord civilActionRecord = new CivilActionRecord(date, civilAction, List.of(man, woman));
+        listCivilActionRecordsSortedByDate.add(civilActionRecord);
     }
 
     // TODO: 3.4.4 Создать метод получения статистики за дату, формат печати в консоль:
