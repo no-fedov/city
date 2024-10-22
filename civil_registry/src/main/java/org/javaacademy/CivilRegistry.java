@@ -4,15 +4,11 @@ package org.javaacademy;
 import lombok.NonNull;
 
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import static org.javaacademy.MaritalStatus.DIVORCED;
 import static org.javaacademy.MaritalStatus.MARRIED;
-import static org.javaacademy.TypeCivilAction.DIVORCE_REGISTRATION;
-import static org.javaacademy.TypeCivilAction.WEDDING_REGISTRATION;
+import static org.javaacademy.TypeCivilAction.*;
 
 public class CivilRegistry {
     private String registryOfficeName;
@@ -28,14 +24,15 @@ public class CivilRegistry {
     // TODO: 3.4.1 Рождение ребенка - передается новорожденный, отец, мать + дата регистрации рождения.
     //  Создается запись гражданского действия за дату регистрации.
     public void birthChild(Citizen child, Citizen mather, Citizen father, Date date) {
-        List<Citizen> citizens = new ArrayList<>();
-        citizens.add(mather);
-        citizens.add(father);
-        CivilActionRecord civilActionRecord = new CivilActionRecord(LocalDate.now(),
-                BIRTH_REGISTRATION,citizens );
-        if (child != null && mather != null && father != null){
-            listCivilActionRecordsSortedByDate.add(civilActionRecord);
-        }
+        makeCivilActionRecord(LocalDate.now(),BIRTH_REGISTRATION,mather,father);
+//        List<Citizen> citizens = new ArrayList<>();
+//        citizens.add(mather);
+//        citizens.add(father);
+//        CivilActionRecord civilActionRecord = new CivilActionRecord(LocalDate.now(),
+//                BIRTH_REGISTRATION,citizens );
+//        if (child != null && mather != null && father != null){
+//            listCivilActionRecordsSortedByDate.add(civilActionRecord);
+//        }
         // сделать проверки, создать запись, добавить в список
     }
 

@@ -1,7 +1,9 @@
 package org.javaacademy;
 
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import static org.javaacademy.MaritalStatus.SINGLE;
 
 @Getter
 @Setter
