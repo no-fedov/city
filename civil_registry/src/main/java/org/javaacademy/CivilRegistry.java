@@ -39,13 +39,13 @@ public class CivilRegistry {
     }
 
     public void getStatistic(@NonNull Date findDate) {
-        List<CivilActionRecord> listOfDate = listCivilActionRecordsSortedByDate.stream()
+        List<CivilActionRecord> recordsWithFindDate = listCivilActionRecordsSortedByDate.stream()
                 .filter(e -> e.getActionDate().equals(findDate))
                 .toList();
 
-        long countWedding = countType(listOfDate, WEDDING_REGISTRATION);
-        long countDivorce = countType(listOfDate, DIVORCE_REGISTRATION);
-        long countBirth = countType(listOfDate, BIRTH_REGISTRATION);
+        long countWedding = countType(recordsWithFindDate, WEDDING_REGISTRATION);
+        long countDivorce = countType(recordsWithFindDate, DIVORCE_REGISTRATION);
+        long countBirth = countType(recordsWithFindDate, BIRTH_REGISTRATION);
 
         System.out.printf(statisticPattern,
                 this.getRegistryOfficeName(),
