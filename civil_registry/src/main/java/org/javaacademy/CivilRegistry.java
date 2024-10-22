@@ -5,10 +5,14 @@ import lombok.NonNull;
 
 import java.util.*;
 
+import static org.javaacademy.CivilUtil.countType;
 import static org.javaacademy.TypeCivilAction.*;
 
 @Getter
 public class CivilRegistry {
+    private static final String statisticPattern = "\"Статистика по ЗАГС: %s\n" +
+            "\"Дата %s: количество свадеб - %d, количество разводов - %d, количество рождений - %d\"\n";
+
     private final String registryOfficeName;
     private final Set<CivilActionRecord> listCivilActionRecordsSortedByDate;
 
@@ -36,27 +40,16 @@ public class CivilRegistry {
 
     public void getStatistic(@NonNull Date findDate) {
         List<CivilActionRecord> listOfDate = listCivilActionRecordsSortedByDate.stream()
-                .filter(e -> e.getActionDate() == findDate)
+                .filter(e -> e.getActionDate().equals(findDate))
                 .toList();
 
         long countWedding = countType(listOfDate, WEDDING_REGISTRATION);
         long countDivorce = countType(listOfDate, DIVORCE_REGISTRATION);
         long countBirth = countType(listOfDate, BIRTH_REGISTRATION);
 
-        listOfDate.forEach(e -> System.out.printf("Статистика по ЗАГС: %s\n" +
-                        "Дата %t: количество свадеб - %d, " +
-                        "количество разводов - %d, " +
-                        "количество рождений - %d\n",
-                this.getRegistryOfficeName(),               //Название Загса
-                findDate,                                   //Искомая дата
-                countWedding, countDivorce, countBirth));   //Количество случаев по типу процесса
-    }
-
-//    TODO: Можно вынести в утил класс, если будет такой.
-    @NonNull
-    public static Long countType(@NonNull List<CivilActionRecord> list, @NonNull TypeCivilAction type) {
-        return list.stream()
-                .filter(e -> e.getActionType().equals(type))
-                .count();
+        System.out.printf(statisticPattern,
+                this.getRegistryOfficeName(),
+                findDate,
+                countWedding, countDivorce, countBirth);
     }
 }
