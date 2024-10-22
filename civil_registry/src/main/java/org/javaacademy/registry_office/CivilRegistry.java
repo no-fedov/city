@@ -31,7 +31,7 @@ public class CivilRegistry {
     @NonNull
     public void birthChild(Citizen child, Citizen mather, Citizen father, LocalDate date) {
         genderVerification(father, mather);
-        makeCivilActionRecord(LocalDate.now(), BIRTH_REGISTRATION, mather, father, child);
+        makeCivilActionRecord(date, BIRTH_REGISTRATION, mather, father, child);
     }
 
     @NonNull
