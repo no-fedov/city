@@ -1,13 +1,16 @@
 package org.javaacademy;
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import lombok.Getter;
+import lombok.NonNull;
 
+import java.util.*;
+
+import static org.javaacademy.TypeCivilAction.*;
+
+@Getter
 public class CivilRegistry {
-    private String registryOfficeName;
-    private Set<CivilActionRecord> listCivilActionRecordsSortedByDate;
+    private final String registryOfficeName;
+    private final Set<CivilActionRecord> listCivilActionRecordsSortedByDate;
 
     public CivilRegistry(String registryOfficeName) {
         this.registryOfficeName = registryOfficeName;
@@ -28,13 +31,32 @@ public class CivilRegistry {
     // TODO: 3.4.3 Регистрация развода - передаются мужчина и женщина + дата регистрации развода.
     //  Меняется семейный статус у мужчины и женщины. Создается запись гражданского действия за дату регистрации.
     public void registrationDivorce(Citizen man, Citizen woman, Date date) {
-        // сдеалть проверку что они были женаты, потом логику выполнять
+        // сделать проверку, что они были женаты, потом логику выполнять
     }
 
-    // TODO: 3.4.4 Создать метод получения статистики за дату, формат печати в консоль:
-    //  "Статистика по ЗАГС: [имя загса]
-    //  Дата 20/02/2023: количество свадеб - 1, количество разводов - 2, количество рождений - 5"
-    public void getStatistic() {
-        // тут работа со стримами и полем listCivilActionRecordsSortedByDate
+    public void getStatistic(@NonNull Date findDate) {
+        List<CivilActionRecord> listOfDate = listCivilActionRecordsSortedByDate.stream()
+                .filter(e -> e.getActionDate() == findDate)
+                .toList();
+
+        long countWedding = countType(listOfDate, WEDDING_REGISTRATION);
+        long countDivorce = countType(listOfDate, DIVORCE_REGISTRATION);
+        long countBirth = countType(listOfDate, BIRTH_REGISTRATION);
+
+        listOfDate.forEach(e -> System.out.printf("Статистика по ЗАГС: %s\n" +
+                        "Дата %t: количество свадеб - %d, " +
+                        "количество разводов - %d, " +
+                        "количество рождений - %d\n",
+                this.getRegistryOfficeName(),               //Название Загса
+                findDate,                                   //Искомая дата
+                countWedding, countDivorce, countBirth));   //Количество случаев по типу процесса
+    }
+
+//    TODO: Можно вынести в утил класс, если будет такой.
+    @NonNull
+    public static Long countType(@NonNull List<CivilActionRecord> list, @NonNull TypeCivilAction type) {
+        return list.stream()
+                .filter(e -> e.getActionType().equals(type))
+                .count();
     }
 }

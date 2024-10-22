@@ -16,13 +16,13 @@ public class CivilActionRecord {
     private Date actionDate;
 
     @NonNull
-    private String actionType;
+    private TypeCivilAction actionType;
 
     @NonNull
     private List<Citizen> involvedCitizens;
 
     public CivilActionRecord(@NonNull Date actionDate,
-                             @NonNull String actionType,
+                             @NonNull TypeCivilAction actionType,
                              @NonNull List<Citizen> involvedCitizens) {
         this.actionDate = actionDate;
         this.actionType = actionType;
