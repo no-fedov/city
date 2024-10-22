@@ -1,14 +1,19 @@
-package org.javaacademy;
+package org.javaacademy.registry_office;
 
 
 import lombok.NonNull;
+import org.javaacademy.citizen.Citizen;
+import org.javaacademy.citizen.MaritalStatus;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-import static org.javaacademy.MaritalStatus.DIVORCED;
-import static org.javaacademy.MaritalStatus.MARRIED;
-import static org.javaacademy.TypeCivilAction.*;
+import static org.javaacademy.citizen.MaritalStatus.DIVORCED;
+import static org.javaacademy.citizen.MaritalStatus.MARRIED;
+import static org.javaacademy.registry_office.TypeCivilAction.*;
 
 public class CivilRegistry {
     private String registryOfficeName;
@@ -23,25 +28,12 @@ public class CivilRegistry {
 
     // TODO: 3.4.1 Рождение ребенка - передается новорожденный, отец, мать + дата регистрации рождения.
     //  Создается запись гражданского действия за дату регистрации.
-    public void birthChild(Citizen child, Citizen mather, Citizen father, Date date) {
-        makeCivilActionRecord(LocalDate.now(),BIRTH_REGISTRATION,mather,father);
-//        List<Citizen> citizens = new ArrayList<>();
-//        citizens.add(mather);
-//        citizens.add(father);
-//        CivilActionRecord civilActionRecord = new CivilActionRecord(LocalDate.now(),
-//                BIRTH_REGISTRATION,citizens );
-//        if (child != null && mather != null && father != null){
-//            listCivilActionRecordsSortedByDate.add(civilActionRecord);
-//        }
-        // сделать проверки, создать запись, добавить в список
+    public void birthChild(@NonNull Citizen child, Citizen mather, Citizen father, LocalDate date) {
+        genderVerification(father, mather);
+        makeCivilActionRecord(LocalDate.now(), BIRTH_REGISTRATION, mather, father, child);
     }
 
-    @NonNull
-    public void registrationWedding(Citizen man, Citizen woman, LocalDate date) {
-        if (man.getSpouse() != null && woman.getSpouse() != null) {
-            throw new RuntimeException("Нельзя дважды зарегестрировать брак");
-        }
-
+    public void genderVerification(Citizen man, Citizen woman) {
         if (!man.isMale()) {
             throw new RuntimeException("Мужчина - не мужчина");
         }
@@ -49,6 +41,15 @@ public class CivilRegistry {
         if (woman.isMale()) {
             throw new RuntimeException("Женщина - не женщина");
         }
+    }
+
+    @NonNull
+    public void registrationWedding(Citizen man, Citizen woman, LocalDate date) {
+        if (man.getSpouse() != null && woman.getSpouse() != null) {
+            throw new RuntimeException("Нельзя дважды зарегестрировать брак");
+        }
+        genderVerification(man, woman);
+
         manageMaritalRelations(man, woman, MARRIED);
         makeCivilActionRecord(date, WEDDING_REGISTRATION, man, woman);
     }

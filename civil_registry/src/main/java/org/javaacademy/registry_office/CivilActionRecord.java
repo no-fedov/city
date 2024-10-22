@@ -1,9 +1,10 @@
-package org.javaacademy;
+package org.javaacademy.registry_office;
 
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import org.javaacademy.citizen.Citizen;
 
 import java.time.LocalDate;
 import java.util.List;

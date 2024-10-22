@@ -1,9 +1,10 @@
-package org.javaacademy;
+package org.javaacademy.citizen;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.javaacademy.Human;
 
-import static org.javaacademy.MaritalStatus.SINGLE;
+import static org.javaacademy.citizen.MaritalStatus.SINGLE;
 
 @Getter
 @Setter
