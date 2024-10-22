@@ -76,9 +76,8 @@ public class CivilRegistry {
 
     private void makeCivilActionRecord(LocalDate date,
                                        TypeCivilAction civilAction,
-                                       Citizen man,
-                                       Citizen woman) {
-        CivilActionRecord civilActionRecord = new CivilActionRecord(date, civilAction, List.of(man, woman));
+                                       Citizen... citizens) {
+        CivilActionRecord civilActionRecord = new CivilActionRecord(date, civilAction, List.of(citizens));
         listCivilActionRecordsSortedByDate.add(civilActionRecord);
     }
 
