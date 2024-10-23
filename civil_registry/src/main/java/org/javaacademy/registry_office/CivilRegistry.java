@@ -28,7 +28,6 @@ public class CivilRegistry {
         this.sortedRecordsByDate = new TreeMap<>();
     }
 
-    // TODO: нужна ли нам тут варификация что это их ребенок?
     public void birthChild(@NonNull Citizen child,
                            @NonNull Citizen firstCitizen,
                            @NonNull Citizen secondCitizen,
