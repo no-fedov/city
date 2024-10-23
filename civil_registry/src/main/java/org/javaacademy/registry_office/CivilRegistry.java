@@ -5,10 +5,10 @@ import org.javaacademy.citizen.Citizen;
 import org.javaacademy.citizen.MaritalStatus;
 
 import java.time.LocalDate;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Map;
+import java.util.TreeMap;
 
 import static org.javaacademy.citizen.MaritalStatus.DIVORCED;
 import static org.javaacademy.citizen.MaritalStatus.MARRIED;
@@ -20,14 +20,11 @@ public class CivilRegistry {
             "\"Дата %s: количество свадеб - %d, количество разводов - %d, количество рождений - %d\"\n";
 
     private String registryOfficeName;
-    private Set<CivilActionRecord> listCivilActionRecordsSortedByDate;
+    private Map<LocalDate, List<CivilActionRecord>> listCivilActionRecordsSortedByDate;
 
     public CivilRegistry(String registryOfficeName) {
         this.registryOfficeName = registryOfficeName;
-        //TODO: компаратор работает, но сравнивать листы по хешкоду такая себе идея подумать как фиксить
-        this.listCivilActionRecordsSortedByDate = new TreeSet<>(Comparator.comparing(CivilActionRecord::getActionDate)
-                .thenComparing(CivilActionRecord::getActionType, Enum::compareTo)
-                .thenComparing(CivilActionRecord::getInvolvedCitizens, Comparator.comparingInt(List::hashCode)));
+        this.listCivilActionRecordsSortedByDate = new TreeMap<>();
     }
 
     // TODO: нужна ли нам тут варификация что это их ребенок?
@@ -64,6 +61,28 @@ public class CivilRegistry {
         makeCivilActionRecord(date, DIVORCE_REGISTRATION, man, woman);
     }
 
+    public void getStatistic(@NonNull LocalDate findDate) {
+        List<CivilActionRecord> recordsWithFindDate = listCivilActionRecordsSortedByDate.get(findDate);
+
+        if (recordsWithFindDate == null) {
+            printStatistic(findDate, 0, 0, 0);
+            return;
+        }
+
+        long countWedding = countType(recordsWithFindDate, WEDDING_REGISTRATION);
+        long countDivorce = countType(recordsWithFindDate, DIVORCE_REGISTRATION);
+        long countBirth = countType(recordsWithFindDate, BIRTH_REGISTRATION);
+
+        printStatistic(findDate, countWedding, countDivorce, countBirth);
+    }
+
+    private void printStatistic(LocalDate date, long countWedding, long countDivorce, long countBirth) {
+        System.out.printf(statisticPattern,
+                this.registryOfficeName,
+                date,
+                countWedding, countDivorce, countBirth);
+    }
+
     private void manageMaritalRelations(Citizen man,
                                         Citizen woman,
                                         MaritalStatus maritalStatus) {
@@ -77,7 +96,9 @@ public class CivilRegistry {
                                        TypeCivilAction civilAction,
                                        Citizen... citizens) {
         CivilActionRecord civilActionRecord = new CivilActionRecord(date, civilAction, List.of(citizens));
-        listCivilActionRecordsSortedByDate.add(civilActionRecord);
+        listCivilActionRecordsSortedByDate
+                .computeIfAbsent(date, key -> new ArrayList<>())
+                .add(civilActionRecord);
     }
 
     // TODO: подумать куда вынести и как оформить
@@ -89,20 +110,5 @@ public class CivilRegistry {
         if (woman.isMale()) {
             throw new RuntimeException("Женщина - не женщина");
         }
-    }
-
-    public void getStatistic(@NonNull LocalDate findDate) {
-        List<CivilActionRecord> recordsWithFindDate = listCivilActionRecordsSortedByDate.stream()
-                .filter(e -> e.getActionDate().equals(findDate))
-                .toList();
-
-        long countWedding = countType(recordsWithFindDate, WEDDING_REGISTRATION);
-        long countDivorce = countType(recordsWithFindDate, DIVORCE_REGISTRATION);
-        long countBirth = countType(recordsWithFindDate, BIRTH_REGISTRATION);
-
-        System.out.printf(statisticPattern,
-                this.registryOfficeName,
-                findDate,
-                countWedding, countDivorce, countBirth);
     }
 }
