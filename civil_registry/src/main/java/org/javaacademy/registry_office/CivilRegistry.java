@@ -1,6 +1,5 @@
 package org.javaacademy.registry_office;
 
-
 import lombok.NonNull;
 import org.javaacademy.citizen.Citizen;
 import org.javaacademy.citizen.MaritalStatus;
@@ -32,26 +31,33 @@ public class CivilRegistry {
     }
 
     // TODO: нужна ли нам тут варификация что это их ребенок?
-    @NonNull
-    public void birthChild(Citizen child, Citizen mather, Citizen father, LocalDate date) {
+    public void birthChild(@NonNull Citizen child,
+                           @NonNull Citizen mather,
+                           @NonNull Citizen father,
+                           @NonNull LocalDate date) {
+        if (!mather.getChildren().contains(child) || !father.getChildren().contains(child)) {
+            throw new RuntimeException("Нельзя зарегистрировать чужого ребенка");
+        }
         genderVerification(father, mather);
         makeCivilActionRecord(date, BIRTH_REGISTRATION, mather, father, child);
     }
 
-    @NonNull
-    public void registrationWedding(Citizen man, Citizen woman, LocalDate date) {
-        if (man.getSpouse() != null && woman.getSpouse() != null) {
-            throw new RuntimeException("Нельзя дважды зарегестрировать брак");
+    public void registrationWedding(@NonNull Citizen man,
+                                    @NonNull Citizen woman,
+                                    @NonNull LocalDate date) {
+        if (man.getSpouse() != null || woman.getSpouse() != null) {
+            throw new RuntimeException("Нельзя дважды зарегистрировать брак");
         }
         genderVerification(man, woman);
         manageMaritalRelations(man, woman, MARRIED);
         makeCivilActionRecord(date, WEDDING_REGISTRATION, man, woman);
     }
 
-    @NonNull
-    public void registrationDivorce(Citizen man, Citizen woman, LocalDate date) {
+    public void registrationDivorce(@NonNull Citizen man,
+                                    @NonNull Citizen woman,
+                                    @NonNull LocalDate date) {
         if (!man.getSpouse().equals(woman)) {
-            throw new RuntimeException("Нельзя развеститсь людям которые не состоят в браке");
+            throw new RuntimeException("Нельзя развестись людям, которые не состоят в браке");
         }
         genderVerification(man, woman);
         manageMaritalRelations(man, woman, DIVORCED);
