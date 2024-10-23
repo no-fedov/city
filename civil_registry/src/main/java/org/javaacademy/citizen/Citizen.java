@@ -23,4 +23,22 @@ public class Citizen extends Human {
         super(name, surname, patronymic, isMale);
         this.maritalStatus = SINGLE;
     }
+
+    private Citizen(@NonNull Human human) {
+        super(human.getName(),
+                human.getSurname(),
+                human.getPatronymic(),
+                human.isMale());
+        this.setParents(human.getMother(), human.getFather());
+    }
+
+    @Override
+    public Citizen makeChild(@NonNull String name,
+                             @NonNull String surname,
+                             @NonNull String patronymic,
+                             boolean isMale,
+                             @NonNull Human otherParent) {
+        Human child = super.makeChild(name, surname, patronymic, isMale, otherParent);
+        return new Citizen(child);
+    }
 }
