@@ -13,7 +13,7 @@ import java.util.TreeMap;
 import static org.javaacademy.citizen.MaritalStatus.DIVORCED;
 import static org.javaacademy.citizen.MaritalStatus.MARRIED;
 import static org.javaacademy.registry_office.TypeCivilAction.*;
-import static org.javaacademy.util.CivilUtil.countType;
+import static org.javaacademy.util.CivilUtil.*;
 
 public class CivilRegistry {
     private static final String statisticPattern = "\"Статистика по ЗАГС: %s\n" +
