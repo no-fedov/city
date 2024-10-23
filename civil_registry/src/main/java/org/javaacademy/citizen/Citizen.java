@@ -13,6 +13,7 @@ import static org.javaacademy.citizen.MaritalStatus.SINGLE;
 public class Citizen extends Human {
     MaritalStatus maritalStatus;
 
+    @ToString.Exclude
     Citizen spouse;
 
     public Citizen(@NonNull String name,
