@@ -92,14 +92,14 @@
         <profile>
             <id>prom</id>
             <build>
-                <finalName>prom</finalName>
+                <finalName>civil_registry_app_prom</finalName>
             </build>
         </profile>
 
         <profile>
             <id>test</id>
             <build>
-                <finalName>test</finalName>
+                <finalName>civil_registry_app_test</finalName>
             </build>
         </profile>
     </profiles>
