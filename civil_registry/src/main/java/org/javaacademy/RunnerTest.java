@@ -22,23 +22,29 @@ public class RunnerTest {
         civilRegistry.registrationDivorce(citizen3, citizen4, date);
 
 
-        Citizen child1 = citizen1.makeChild("Ребенок1",
+        Citizen child1 = citizen1.makeChild(
                 "Ребенок1",
                 "Ребенок1",
+                "Ребенок1",
                 false,
-                citizen2);
+                citizen2
+        );
 
-        Citizen child2 = citizen1.makeChild("Ребенок2",
+        Citizen child2 = citizen1.makeChild(
                 "Ребенок2",
                 "Ребенок2",
+                "Ребенок2",
                 false,
-                citizen2);
+                citizen2
+        );
 
-        Citizen child3 = citizen1.makeChild("Ребенок3",
+        Citizen child3 = citizen1.makeChild(
+                "Ребенок3",
                 "Ребенок3",
                 "Ребенок3",
                 false,
-                citizen2);
+                citizen2
+        );
 
         civilRegistry.birthChild(child1, citizen2, citizen1, date);
         civilRegistry.birthChild(child2, citizen2, citizen1, date);
