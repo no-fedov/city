@@ -28,7 +28,8 @@ public class Citizen extends Human {
         super(human.getName(),
                 human.getSurname(),
                 human.getPatronymic(),
-                human.isMale());
+                human.isMale()
+        );
         this.setParents(human.getMother(), human.getFather());
     }
 
