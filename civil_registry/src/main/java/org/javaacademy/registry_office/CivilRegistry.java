@@ -10,59 +10,60 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static org.javaacademy.HumanUtil.genderOppositeCheck;
 import static org.javaacademy.citizen.MaritalStatus.DIVORCED;
 import static org.javaacademy.citizen.MaritalStatus.MARRIED;
 import static org.javaacademy.registry_office.TypeCivilAction.*;
-import static org.javaacademy.util.CivilUtil.*;
+import static org.javaacademy.util.CivilUtil.countType;
 
 public class CivilRegistry {
     private static final String statisticPattern = "\"Статистика по ЗАГС: %s\n" +
             "\"Дата %s: количество свадеб - %d, количество разводов - %d, количество рождений - %d\"\n";
 
     private String registryOfficeName;
-    private Map<LocalDate, List<CivilActionRecord>> listCivilActionRecordsSortedByDate;
+    private Map<LocalDate, List<CivilActionRecord>> sortedRecordsByDate;
 
     public CivilRegistry(String registryOfficeName) {
         this.registryOfficeName = registryOfficeName;
-        this.listCivilActionRecordsSortedByDate = new TreeMap<>();
+        this.sortedRecordsByDate = new TreeMap<>();
     }
 
     // TODO: нужна ли нам тут варификация что это их ребенок?
     public void birthChild(@NonNull Citizen child,
-                           @NonNull Citizen mather,
-                           @NonNull Citizen father,
+                           @NonNull Citizen firstCitizen,
+                           @NonNull Citizen secondCitizen,
                            @NonNull LocalDate date) {
-        if (!mather.getChildren().contains(child) || !father.getChildren().contains(child)) {
+        if (!firstCitizen.getChildren().contains(child) || !secondCitizen.getChildren().contains(child)) {
             throw new RuntimeException("Нельзя зарегистрировать чужого ребенка");
         }
-        genderVerification(father, mather);
-        makeCivilActionRecord(date, BIRTH_REGISTRATION, mather, father, child);
+        genderOppositeCheck(firstCitizen, secondCitizen);
+        makeCivilActionRecord(date, BIRTH_REGISTRATION, firstCitizen, secondCitizen, child);
     }
 
-    public void registrationWedding(@NonNull Citizen man,
-                                    @NonNull Citizen woman,
+    public void registrationWedding(@NonNull Citizen firstCitizen,
+                                    @NonNull Citizen secondCitizen,
                                     @NonNull LocalDate date) {
-        if (man.getSpouse() != null || woman.getSpouse() != null) {
+        if (firstCitizen.getSpouse() != null || secondCitizen.getSpouse() != null) {
             throw new RuntimeException("Нельзя дважды зарегистрировать брак");
         }
-        genderVerification(man, woman);
-        manageMaritalRelations(man, woman, MARRIED);
-        makeCivilActionRecord(date, WEDDING_REGISTRATION, man, woman);
+        genderOppositeCheck(firstCitizen, secondCitizen);
+        manageMaritalRelations(firstCitizen, secondCitizen, MARRIED);
+        makeCivilActionRecord(date, WEDDING_REGISTRATION, firstCitizen, secondCitizen);
     }
 
-    public void registrationDivorce(@NonNull Citizen man,
-                                    @NonNull Citizen woman,
+    public void registrationDivorce(@NonNull Citizen firstCitizen,
+                                    @NonNull Citizen secondCitizen,
                                     @NonNull LocalDate date) {
-        if (!man.getSpouse().equals(woman)) {
+        if (!firstCitizen.getSpouse().equals(secondCitizen)) {
             throw new RuntimeException("Нельзя развестись людям, которые не состоят в браке");
         }
-        genderVerification(man, woman);
-        manageMaritalRelations(man, woman, DIVORCED);
-        makeCivilActionRecord(date, DIVORCE_REGISTRATION, man, woman);
+        genderOppositeCheck(firstCitizen, secondCitizen);
+        manageMaritalRelations(firstCitizen, secondCitizen, DIVORCED);
+        makeCivilActionRecord(date, DIVORCE_REGISTRATION, firstCitizen, secondCitizen);
     }
 
     public void getStatistic(@NonNull LocalDate findDate) {
-        List<CivilActionRecord> recordsWithFindDate = listCivilActionRecordsSortedByDate.get(findDate);
+        List<CivilActionRecord> recordsWithFindDate = sortedRecordsByDate.get(findDate);
 
         if (recordsWithFindDate == null) {
             printStatistic(findDate, 0, 0, 0);
@@ -83,32 +84,20 @@ public class CivilRegistry {
                 countWedding, countDivorce, countBirth);
     }
 
-    private void manageMaritalRelations(Citizen man,
-                                        Citizen woman,
+    private void manageMaritalRelations(Citizen firstCitizen,
+                                        Citizen secondCitizen,
                                         MaritalStatus maritalStatus) {
-        man.setSpouse(woman);
-        man.setMaritalStatus(maritalStatus);
-        woman.setSpouse(woman);
-        woman.setMaritalStatus(maritalStatus);
+        firstCitizen.setSpouse(secondCitizen);
+        firstCitizen.setMaritalStatus(maritalStatus);
+        secondCitizen.setSpouse(firstCitizen);
+        secondCitizen.setMaritalStatus(maritalStatus);
     }
 
     private void makeCivilActionRecord(LocalDate date,
                                        TypeCivilAction civilAction,
                                        Citizen... citizens) {
         CivilActionRecord civilActionRecord = new CivilActionRecord(date, civilAction, List.of(citizens));
-        listCivilActionRecordsSortedByDate
-                .computeIfAbsent(date, key -> new ArrayList<>())
+        sortedRecordsByDate.computeIfAbsent(date, key -> new ArrayList<>())
                 .add(civilActionRecord);
-    }
-
-    // TODO: подумать куда вынести и как оформить
-    private void genderVerification(Citizen man, Citizen woman) {
-        if (!man.isMale()) {
-            throw new RuntimeException("Мужчина - не мужчина");
-        }
-
-        if (woman.isMale()) {
-            throw new RuntimeException("Женщина - не женщина");
-        }
     }
 }
