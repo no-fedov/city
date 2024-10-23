@@ -7,8 +7,8 @@ import java.time.LocalDate;
 
 public class RunnerProm {
     public static void main(String[] args) {
-        //TODO: какая т осамодеятельность по-моему
-        if (args == null) {
+        //TODO: какая-то самодеятельность по-моему
+        if (args.length == 0) {
             return;
         }
         String nameCivilRegistry = args[0];
@@ -25,9 +25,23 @@ public class RunnerProm {
 
         civilRegistry.registrationDivorce(citizen3, citizen4, date);
 
-        Citizen child1 = new Citizen("Ребенок1", "Ребенок1", "Ребенок1", false);
-        Citizen child2 = new Citizen("Ребенок2", "Ребенок2", "Ребенок2", false);
-        Citizen child3 = new Citizen("Ребенок3", "Ребенок3", "Ребенок3", false);
+        Citizen child1 = citizen1.makeChild("Ребенок1",
+                "Ребенок1",
+                "Ребенок1",
+                false,
+                citizen2);
+
+        Citizen child2 = citizen1.makeChild("Ребенок2",
+                "Ребенок2",
+                "Ребенок2",
+                false,
+                citizen2);
+
+        Citizen child3 = citizen1.makeChild("Ребенок3",
+                "Ребенок3",
+                "Ребенок3",
+                false,
+                citizen2);
 
         civilRegistry.birthChild(child1, citizen2, citizen1, date);
         civilRegistry.birthChild(child2, citizen2, citizen1, date);
