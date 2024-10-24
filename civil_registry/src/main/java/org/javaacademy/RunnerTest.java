@@ -21,7 +21,6 @@ public class RunnerTest {
 
         civilRegistry.registrationDivorce(citizen3, citizen4, date);
 
-
         Citizen child1 = citizen1.makeChild(
                 "Ребенок1",
                 "Ребенок1",
