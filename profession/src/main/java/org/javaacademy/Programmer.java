@@ -22,10 +22,10 @@ public class Programmer extends Employee {
         super(name, surname, patronymic, isMale);
     }
 
-    public void setRate(@NonNull BigDecimal rate) {
+    public void setProgrammerRate(@NonNull BigDecimal rate) {
         checkValidateRate(expectValidate -> expectValidate.compareTo(MIN_RATE) >= 0, rate);
         checkValidateRate(expectValidate -> expectValidate.compareTo(MAX_RATE) < 0, rate);
-        this.rate = rate;
+        this.setRate(rate);
     }
 
     private void checkValidateRate(Predicate<BigDecimal> condition, BigDecimal rate) {
