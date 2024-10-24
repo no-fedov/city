@@ -4,14 +4,11 @@ import org.javaacademy.citizen.Citizen;
 import org.javaacademy.registry_office.CivilRegistry;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 public class RunnerProm {
     public static void main(String[] args) {
-        //TODO: какая-то самодеятельность по-моему
-        if (args.length == 0) {
-            return;
-        }
-        String nameCivilRegistry = args[0];
+        String nameCivilRegistry = Arrays.toString(args);
         CivilRegistry civilRegistry = new CivilRegistry(nameCivilRegistry);
         LocalDate date = LocalDate.of(2000, 1, 10);
 
