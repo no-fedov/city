@@ -1,17 +1,19 @@
 package org.javaacademy;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.util.function.Predicate;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 public class Programmer extends Employee {
-    private Task task;
-    private static final BigDecimal MIN_RATE = BigDecimal.valueOf(1500);
-    private static final BigDecimal MAX_RATE = BigDecimal.valueOf(2000);
+    Task task;
+    static final BigDecimal MIN_RATE = BigDecimal.valueOf(1500);
+    static final BigDecimal MAX_RATE = BigDecimal.valueOf(2000);
 
     public Programmer(@NonNull String name,
                       @NonNull String surname,
@@ -20,29 +22,25 @@ public class Programmer extends Employee {
         super(name, surname, patronymic, isMale);
     }
 
-    public void setRate(BigDecimal rate) {
-        if (checkRate(rate)) {
-            throw new RuntimeException();
-        } else {
-            this.rate = rate;
-        }
+    public void setRate(@NonNull BigDecimal rate) {
+        checkValidateRate(expectValidate -> expectValidate.compareTo(MIN_RATE) >= 0, rate);
+        checkValidateRate(expectValidate -> expectValidate.compareTo(MAX_RATE) < 0, rate);
+        this.rate = rate;
     }
 
-    private boolean checkRate(BigDecimal rate) {
-        int flag = 0;
-        flag = rate.min(MIN_RATE).equals(rate) ? flag += 1 : flag;
-        flag = rate.max(MAX_RATE).equals(rate) ? flag += 1 : flag;
-        if (flag > 0) {
-            return false;
+    private void checkValidateRate(Predicate<BigDecimal> condition, BigDecimal rate) {
+        if (condition.test(rate)) {
+            return;
         }
-        return true;
+        throw new RuntimeException(String.format("Неподходящая ставка, ставка должна быть в диапазоне %s - %s.",
+                MIN_RATE, MAX_RATE));
     }
 
-    private void takeTask(Task receivedtask) {
-        if (receivedtask.isSolved() == false) {
-            this.task = receivedtask;
-            task.setSolved(true);
+    public void takeTask(@NonNull Task receivedtask) {
+        if (receivedtask.isSolved()) {
+            throw new RuntimeException("Задача уже решена");
         }
+        this.task = receivedtask;
+        task.setSolved(true);
     }
-
 }
