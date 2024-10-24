@@ -11,8 +11,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import static org.javaacademy.HumanUtil.*;
-import static org.javaacademy.citizen.MaritalStatus.DIVORCED;
-import static org.javaacademy.citizen.MaritalStatus.MARRIED;
+import static org.javaacademy.citizen.MaritalStatus.*;
 import static org.javaacademy.registry_office.TypeCivilAction.*;
 import static org.javaacademy.util.CivilUtil.*;
 
@@ -32,7 +31,8 @@ public class CivilRegistry {
                            @NonNull Citizen firstCitizen,
                            @NonNull Citizen secondCitizen,
                            @NonNull LocalDate date) {
-        if (!firstCitizen.getChildren().contains(child) || !secondCitizen.getChildren().contains(child)) {
+        if (!firstCitizen.getChildren().contains(child)
+                || !secondCitizen.getChildren().contains(child)) {
             throw new RuntimeException("Нельзя зарегистрировать чужого ребенка");
         }
         genderOppositeCheck(firstCitizen, secondCitizen);
@@ -53,7 +53,11 @@ public class CivilRegistry {
     public void registrationDivorce(@NonNull Citizen firstCitizen,
                                     @NonNull Citizen secondCitizen,
                                     @NonNull LocalDate date) {
-        if (!firstCitizen.getSpouse().equals(secondCitizen)) {
+        if (firstCitizen.getMaritalStatus() == SINGLE
+                || secondCitizen.getMaritalStatus() == SINGLE
+                || firstCitizen.getSpouse() == null
+                || secondCitizen.getSpouse() == null
+                || !firstCitizen.getSpouse().equals(secondCitizen)) {
             throw new RuntimeException("Нельзя развестись людям, которые не состоят в браке");
         }
         genderOppositeCheck(firstCitizen, secondCitizen);
@@ -86,10 +90,15 @@ public class CivilRegistry {
     private void manageMaritalRelations(Citizen firstCitizen,
                                         Citizen secondCitizen,
                                         MaritalStatus maritalStatus) {
-        firstCitizen.setSpouse(secondCitizen);
         firstCitizen.setMaritalStatus(maritalStatus);
-        secondCitizen.setSpouse(firstCitizen);
         secondCitizen.setMaritalStatus(maritalStatus);
+        if (maritalStatus == DIVORCED) {
+            firstCitizen.setSpouse(null);
+            secondCitizen.setSpouse(null);
+            return;
+        }
+        firstCitizen.setSpouse(secondCitizen);
+        secondCitizen.setSpouse(firstCitizen);
     }
 
     private void makeCivilActionRecord(LocalDate date,
