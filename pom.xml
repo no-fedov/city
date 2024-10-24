@@ -92,16 +92,10 @@
     <profiles>
         <profile>
             <id>prom</id>
-            <build>
-                <finalName>prom</finalName>
-            </build>
         </profile>
 
         <profile>
             <id>test</id>
-            <build>
-                <finalName>test</finalName>
-            </build>
         </profile>
     </profiles>
 </project>
