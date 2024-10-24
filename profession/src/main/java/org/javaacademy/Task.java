@@ -13,5 +13,5 @@ import java.time.Duration;
 public class Task {
     String specification;
     boolean isSolved;
-    Duration timeSpent;
+    Duration hours;
 }
