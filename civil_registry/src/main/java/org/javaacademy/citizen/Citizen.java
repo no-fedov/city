@@ -12,6 +12,7 @@ import static org.javaacademy.citizen.MaritalStatus.SINGLE;
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Citizen extends Human {
+    @NonNull
     MaritalStatus maritalStatus;
 
     @ToString.Exclude
