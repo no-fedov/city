@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 public class Employee extends Human {
     protected BigDecimal rate;
 
+    protected BigDecimal earnedMoney;
+
     public Employee(@NonNull String name,
                     @NonNull String surname,
                     @NonNull String patronymic,
