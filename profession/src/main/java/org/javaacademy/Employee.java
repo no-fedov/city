@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class Employee extends Human {
-    private BigDecimal rate;
+    protected BigDecimal rate;
 
     public Employee(@NonNull String name,
                     @NonNull String surname,

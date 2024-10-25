@@ -11,7 +11,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import static org.javaacademy.HumanUtil.*;
-import static org.javaacademy.citizen.MaritalStatus.*;
+import static org.javaacademy.citizen.MaritalStatus.DIVORCED;
+import static org.javaacademy.citizen.MaritalStatus.MARRIED;
 import static org.javaacademy.registry_office.TypeCivilAction.*;
 import static org.javaacademy.util.CivilUtil.*;
 
@@ -31,21 +32,21 @@ public class CivilRegistry {
                            @NonNull Citizen firstCitizen,
                            @NonNull Citizen secondCitizen,
                            @NonNull LocalDate date) {
+        genderOppositeCheck(firstCitizen, secondCitizen);
         if (!firstCitizen.getChildren().contains(child)
                 || !secondCitizen.getChildren().contains(child)) {
             throw new RuntimeException("Нельзя зарегистрировать чужого ребенка");
         }
-        genderOppositeCheck(firstCitizen, secondCitizen);
         makeCivilActionRecord(date, BIRTH_REGISTRATION, firstCitizen, secondCitizen, child);
     }
 
     public void registrationWedding(@NonNull Citizen firstCitizen,
                                     @NonNull Citizen secondCitizen,
                                     @NonNull LocalDate date) {
+        genderOppositeCheck(firstCitizen, secondCitizen);
         if (firstCitizen.getSpouse() != null || secondCitizen.getSpouse() != null) {
             throw new RuntimeException("Нельзя дважды зарегистрировать брак");
         }
-        genderOppositeCheck(firstCitizen, secondCitizen);
         manageMaritalRelations(firstCitizen, secondCitizen, MARRIED);
         makeCivilActionRecord(date, WEDDING_REGISTRATION, firstCitizen, secondCitizen);
     }
@@ -53,14 +54,14 @@ public class CivilRegistry {
     public void registrationDivorce(@NonNull Citizen firstCitizen,
                                     @NonNull Citizen secondCitizen,
                                     @NonNull LocalDate date) {
-        if (firstCitizen.getMaritalStatus() == SINGLE
-                || secondCitizen.getMaritalStatus() == SINGLE
+        genderOppositeCheck(firstCitizen, secondCitizen);
+        if (firstCitizen.getMaritalStatus() != MARRIED
+                || secondCitizen.getMaritalStatus() != MARRIED
                 || firstCitizen.getSpouse() == null
                 || secondCitizen.getSpouse() == null
                 || !firstCitizen.getSpouse().equals(secondCitizen)) {
             throw new RuntimeException("Нельзя развестись людям, которые не состоят в браке");
         }
-        genderOppositeCheck(firstCitizen, secondCitizen);
         manageMaritalRelations(firstCitizen, secondCitizen, DIVORCED);
         makeCivilActionRecord(date, DIVORCE_REGISTRATION, firstCitizen, secondCitizen);
     }
