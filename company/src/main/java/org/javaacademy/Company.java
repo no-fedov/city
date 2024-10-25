@@ -43,6 +43,23 @@ public class Company {
         setRateForProgrammers(programmers, programmerRate);
     }
 
+    public void payForWeekWork() {
+        timeSheet.forEach((employee, hours) -> {
+            BigDecimal salary = calculateSalary(hours, employee.getRate());
+            paySalaryForEmployee(employee, salary);
+            this.expenses = expenses.add(salary);
+        });
+        timeSheet.clear();
+    }
+
+    private void paySalaryForEmployee(Employee employee, BigDecimal salary) {
+        employee.receiveMoney(salary);
+    }
+
+    private BigDecimal calculateSalary(Duration hours, BigDecimal rate) {
+        return BigDecimal.valueOf(hours.toHours()).multiply(rate);
+    }
+
     private void setRateForProgrammers(Set<Programmer> programmers, BigDecimal rate) {
         for (Programmer programmer : programmers) {
             programmer.setRate(rate);
