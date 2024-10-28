@@ -14,4 +14,9 @@ public class Task {
     String specification;
     boolean isSolved;
     Duration hours;
+
+    @Override
+    public String toString() {
+        return "Задача: " + specification;
+    }
 }
