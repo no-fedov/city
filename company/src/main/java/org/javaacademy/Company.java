@@ -70,18 +70,23 @@ public class Company {
         ArrayList<Programmer> programmersToList = new ArrayList<>(programmers);
         int numKeys = programmers.size();
         int numValues = weekTasks.size();
+        Duration startDuration = Duration.ZERO;
 
         for (int i = 0; i < numValues; i++) {
             Programmer key = programmersToList.get(i % numKeys);
             doneTasks.put(key, weekTasks.get(i));
-            System.out.printf("[%s] - сделана.", weekTasks.get(i).getSpecification());
+            System.out.printf("[%s] - сделана.\n", weekTasks.get(i).getSpecification());
 
-            timeSheet.put(key, (weekTasks.get(i).getHours().plus(timeSheet.get(key))));
+            Duration allKeyTime = timeSheet.get(key);
+            if (timeSheet.get(key) == null) {
+                allKeyTime = Duration.ZERO;
+            }
 
+            timeSheet.put(key, (weekTasks.get(i).getHours().plus(allKeyTime)));
             long nanosTask = (weekTasks.get(i).getHours().toNanos());
             long resultNanos = (long) (nanosTask * MANAGERS_FACTOR);
             Duration resultDuration = Duration.ofNanos(resultNanos);
-            timeSheet.put(manager, (resultDuration.plus(timeSheet.get(key))));
+            timeSheet.put(manager, (resultDuration.plus(allKeyTime)));
         }
     }
 
@@ -94,12 +99,11 @@ public class Company {
                 [%s]
                 Затраты: [%s]
                 Список выполненных задач у компании:
-                [ФИО программиста] - [список задач]
-                [ФИО программиста] - [список задач]
-                """,
+               """,
                 this.companyName, expenses.setScale(2));
-        for (Programmer e : programmers) {
-            System.out.printf("%s - [%s]\n", e.getFullName(), doneTasks.get(e).toString());
+
+        for (Programmer worker : programmers) {
+            System.out.printf("%s - %s\n", worker.getFullName(), doneTasks.get(worker).toString());
         }
     }
 }
