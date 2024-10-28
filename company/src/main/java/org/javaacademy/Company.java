@@ -16,6 +16,8 @@ import java.util.*;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Company {
+    static final double MANAGERS_FACTOR = 0.1;
+
     final String companyName;
     Manager manager;
     final Set<Programmer> programmers;
@@ -49,10 +51,11 @@ public class Company {
             System.out.printf("[%s] - сделана.", weekTasks.get(i).getSpecification());
 
             timeSheet.put(key, (weekTasks.get(i).getHours().plus(timeSheet.get(key))));
-            timeSheet.put(manager, (weekTasks.get(i).getHours().plus(timeSheet.get(key))));
-//            у менеджера требуется умножение на коэффициент 0.1. Не знаю как сделать.
-//            Возможно стоит изменить duration на int и не париться. На работе никто минуты не считает,
-//            только часы
+
+            long nanosTask = (weekTasks.get(i).getHours().toNanos());
+            long resultNanos = (long) (nanosTask * MANAGERS_FACTOR);
+            Duration resultDuration = Duration.ofNanos(resultNanos);
+            timeSheet.put(manager, (resultDuration.plus(timeSheet.get(key))));
         }
     }
 
