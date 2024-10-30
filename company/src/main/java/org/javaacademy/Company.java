@@ -9,7 +9,6 @@ import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.util.*;
 
 @Getter
@@ -29,7 +28,7 @@ public class Company {
 
     final MultiValuedMap<Employee, Task> doneTasks = new HashSetValuedHashMap<>();
 
-    final Map<Employee, Duration> timeSheet = new HashMap<>();
+    final Map<Employee, Double> timeSheet = new HashMap<>();
 
     BigDecimal expenses = BigDecimal.ZERO;
 
@@ -56,8 +55,8 @@ public class Company {
         employee.receiveMoney(salary);
     }
 
-    private BigDecimal calculateSalary(Duration hours, BigDecimal rate) {
-        return BigDecimal.valueOf(hours.toMinutes()).multiply(rate).divide(BigDecimal.valueOf(60));
+    private BigDecimal calculateSalary(Double hours, BigDecimal rate) {
+        return BigDecimal.valueOf(hours).multiply(rate);
     }
 
     private void setRateForProgrammers(Set<Programmer> programmers, BigDecimal programmerRate) {
@@ -70,24 +69,21 @@ public class Company {
         ArrayList<Programmer> programmersToList = new ArrayList<>(programmers);
         int numKeys = programmers.size();
         int numValues = weekTasks.size();
-        Duration startDuration = Duration.ZERO;
 
         for (int i = 0; i < numValues; i++) {
             Programmer key = programmersToList.get(i % numKeys);
             doneTasks.put(key, weekTasks.get(i));
             System.out.printf("[%s] - сделана.\n", weekTasks.get(i).getSpecification());
 
-            Duration allKeyTime = timeSheet.get(key);
+            double allKeyTime;
             if (timeSheet.get(key) == null) {
-                allKeyTime = Duration.ZERO;
+                allKeyTime = 0;
+            } else {
+                allKeyTime = timeSheet.get(key);
             }
 
-            timeSheet.put(key, (weekTasks.get(i).getHours().plus(allKeyTime)));
-
-            long nanosTask = (weekTasks.get(i).getHours().toNanos());
-            long resultNanos = (long) (nanosTask * MANAGERS_FACTOR);
-            Duration resultDuration = Duration.ofNanos(resultNanos);
-            timeSheet.put(manager, (resultDuration.plus(allKeyTime)));
+            timeSheet.put(key, (weekTasks.get(i).getHours() + allKeyTime));
+            timeSheet.put(manager, (weekTasks.get(i).getHours() * MANAGERS_FACTOR + allKeyTime));
         }
     }
 

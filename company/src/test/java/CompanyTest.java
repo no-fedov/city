@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.util.*;
 
 public class CompanyTest {
@@ -21,8 +20,8 @@ public class CompanyTest {
         Set<Programmer> programmers = new HashSet<>(List.of(prog1));
         Company company = new Company(companyName, manager, programmers, programmerRate);
 
-        Task task1 = new Task("Создать модули", Duration.ofHours(2));
-        Task task2 = new Task("Написать код", Duration.ofHours(6));
+        Task task1 = new Task("Создать модули", 2);
+        Task task2 = new Task("Написать код", 6);
         List<Task> tasks = new ArrayList<>(List.of(task1, task2));
 
         company.weekWork(tasks);
@@ -43,8 +42,8 @@ public class CompanyTest {
         Set<Programmer> programmers = new HashSet<>(List.of(prog1));
         Company company = new Company(companyName, manager, programmers, programmerRate);
 
-        Task task1 = new Task("Создать модули", Duration.ofHours(2));
-        Task task2 = new Task("Написать код", Duration.ofHours(6));
+        Task task1 = new Task("Создать модули", 2);
+        Task task2 = new Task("Написать код", 6);
         List<Task> tasks = new ArrayList<>(List.of(task1, task2));
 
         company.weekWork(tasks);
@@ -65,14 +64,14 @@ public class CompanyTest {
         Set<Programmer> programmers = new HashSet<>(List.of(prog1));
         Company company = new Company(companyName, manager, programmers, programmerRate);
 
-        Task task1 = new Task("Создать модули", Duration.ofHours(1));
+        Task task1 = new Task("Создать модули", 1);
         List<Task> tasks = new ArrayList<>(List.of(task1));
 
         company.weekWork(tasks);
         company.payForWeekWork();
 
-        BigDecimal expected = BigDecimal.valueOf(2_700);
-        BigDecimal result = company.getExpenses();
+        BigDecimal expected = BigDecimal.valueOf(2_700).setScale(2);
+        BigDecimal result = company.getExpenses().setScale(2);
 
         Assertions.assertEquals(expected, result);
     }

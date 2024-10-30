@@ -13,9 +13,9 @@ import java.time.Duration;
 public class Task {
     String specification;
     boolean isSolved;
-    Duration hours;
+    int hours;
 
-    public Task(String specification, Duration hours) {
+    public Task(String specification, int hours) {
         this.specification = specification;
         this.hours = hours;
     }
