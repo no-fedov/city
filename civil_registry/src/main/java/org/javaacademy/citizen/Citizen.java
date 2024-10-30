@@ -1,10 +1,15 @@
 package org.javaacademy.citizen;
 
-import lombok.*;
+
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.javaacademy.Human;
+import org.javaacademy.HumanUtil;
 
-import static org.javaacademy.HumanUtil.*;
 import static org.javaacademy.citizen.MaritalStatus.SINGLE;
 
 @Getter
@@ -32,7 +37,7 @@ public class Citizen extends Human {
                              @NonNull String patronymic,
                              boolean isMale,
                              @NonNull Human otherParent) {
-        genderOppositeCheck(this, otherParent);
+        HumanUtil.genderOppositeCheck(this, otherParent);
         Citizen childCitizen = new Citizen(name, surname, patronymic, isMale);
         childCitizen.setParents(this, otherParent);
         return childCitizen;

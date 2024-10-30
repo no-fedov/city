@@ -9,13 +9,18 @@ import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Company {
-    static final double MANAGERS_FACTOR = 0.1;
+    private static final double MANAGERS_FACTOR = 0.1;
+    private static final int MINUTES_IN_HOUR = 60;
 
     @NonNull
     final String companyName;
@@ -93,10 +98,10 @@ public class Company {
 
     public void info() {
         System.out.printf("""
-                [%s]
-                Затраты: [%s]
-                Список выполненных задач у компании:
-               """,
+                         [%s]
+                         Затраты: [%s]
+                         Список выполненных задач у компании:
+                        """,
                 this.companyName, expenses.setScale(2));
 
         for (Programmer worker : programmers) {

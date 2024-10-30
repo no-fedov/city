@@ -10,8 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.javaacademy.HumanUtil.*;
-
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @ToString(onlyExplicitlyIncluded = true)
@@ -48,7 +46,7 @@ public class Human {
 
     public void setParents(@NonNull Human parent1,
                            @NonNull Human parent2) {
-        genderOppositeCheck(parent1, parent2);
+        HumanUtil.genderOppositeCheck(parent1, parent2);
         if (parent1.isMale) {
             this.father = parent1;
             this.mother = parent2;
@@ -64,7 +62,7 @@ public class Human {
                            @NonNull String patronymic,
                            boolean isMale,
                            @NonNull Human otherParent) {
-        genderOppositeCheck(this, otherParent);
+        HumanUtil.genderOppositeCheck(this, otherParent);
         Human newHuman = new Human(name, surname, patronymic, isMale);
         newHuman.setParents(this, otherParent);
         return newHuman;

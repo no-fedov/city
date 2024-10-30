@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-import java.time.Duration;
-
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter
