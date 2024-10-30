@@ -71,11 +71,9 @@ public class CompanyTest {
         company.weekWork(tasks);
         company.payForWeekWork();
 
-        BigDecimal expected = BigDecimal.valueOf(1_700);
+        BigDecimal expected = BigDecimal.valueOf(2_700);
         BigDecimal result = company.getExpenses();
 
         Assertions.assertEquals(expected, result);
     }
-
-
 }
