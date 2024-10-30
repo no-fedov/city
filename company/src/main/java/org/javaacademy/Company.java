@@ -9,10 +9,12 @@ import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @Getter
@@ -78,7 +80,7 @@ public class Company {
         for (int i = 0; i < numValues; i++) {
             Programmer key = programmersToList.get(i % numKeys);
             doneTasks.put(key, weekTasks.get(i));
-            System.out.printf("[%s] - сделана.\n", weekTasks.get(i).getSpecification());
+            tasksDescription(weekTasks.get(i));
 
             double allKeyTime;
             if (timeSheet.get(key) == null) {
@@ -88,21 +90,26 @@ public class Company {
             }
 
             timeSheet.put(key, (weekTasks.get(i).getHours() + allKeyTime));
-            timeSheet.put(manager, (weekTasks.get(i).getHours() * MANAGERS_FACTOR + allKeyTime));
+        }
+        calculateWorkingTimeForManager(weekTasks);
+    }
+
+    private void calculateWorkingTimeForManager(List<Task> tasks) {
+        Optional<Integer> hours = tasks.stream().map(Task::getHours).reduce(Integer::sum);
+        if (hours.isPresent()) {
+            timeSheet.put(manager, timeSheet.getOrDefault(manager, 0d)
+                    + hours.get() * MANAGERS_FACTOR);
         }
     }
 
     private void tasksDescription(Task doneTask) {
-        System.out.printf("[%s] - сделана.", doneTask.getSpecification());
+        System.out.printf("[%s] - сделана.\n", doneTask.getSpecification());
     }
 
     public void info() {
-        System.out.printf("""
-                         [%s]
-                         Затраты: [%s]
-                         Список выполненных задач у компании:
-                        """,
-                this.companyName, expenses.setScale(2));
+        System.out.printf("\n[%s]\nЗатраты: [%s]\n"
+                        + "Список выполненных задач у компании:\n",
+                this.companyName, expenses.setScale(2, RoundingMode.HALF_UP));
 
         for (Programmer worker : programmers) {
             System.out.printf("%s - %s\n", worker.getFullName(), doneTasks.get(worker).toString());
