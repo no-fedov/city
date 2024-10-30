@@ -4,7 +4,6 @@ import org.javaacademy.Programmer;
 import org.javaacademy.Task;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,7 +25,7 @@ public class Runner {
 
         Manager manager = new Manager("Василий", "Алексеевич", "Баранов", true);
 
-        Set<Programmer> programmers = new HashSet<>(List.of(prog1, prog2));
+        Set<Programmer> programmers = Set.of(prog1, prog2);
         Company oracle = new Company(companyName, manager, programmers, programmerRate);
 
         Task task1 = new Task("Создать модули", TIME_FOR_TASK);
