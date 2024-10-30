@@ -56,8 +56,8 @@ public class Company {
         employee.receiveMoney(salary);
     }
 
-    private BigDecimal calculateSalary(Duration hours, BigDecimal rate) {
-        return BigDecimal.valueOf(hours.toHours()).multiply(rate);
+    public static BigDecimal calculateSalary(Duration hours, BigDecimal rate) {
+        return BigDecimal.valueOf(hours.toMinutes()).multiply(rate).divide(BigDecimal.valueOf(60));
     }
 
     private void setRateForProgrammers(Set<Programmer> programmers, BigDecimal programmerRate) {
@@ -83,6 +83,7 @@ public class Company {
             }
 
             timeSheet.put(key, (weekTasks.get(i).getHours().plus(allKeyTime)));
+
             long nanosTask = (weekTasks.get(i).getHours().toNanos());
             long resultNanos = (long) (nanosTask * MANAGERS_FACTOR);
             Duration resultDuration = Duration.ofNanos(resultNanos);
