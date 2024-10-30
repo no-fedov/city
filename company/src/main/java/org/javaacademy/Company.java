@@ -56,7 +56,7 @@ public class Company {
         employee.receiveMoney(salary);
     }
 
-    public static BigDecimal calculateSalary(Duration hours, BigDecimal rate) {
+    private BigDecimal calculateSalary(Duration hours, BigDecimal rate) {
         return BigDecimal.valueOf(hours.toMinutes()).multiply(rate).divide(BigDecimal.valueOf(60));
     }
 
@@ -91,7 +91,7 @@ public class Company {
         }
     }
 
-    private static void tasksDescription(Task doneTask) {
+    private void tasksDescription(Task doneTask) {
         System.out.printf("[%s] - сделана.", doneTask.getSpecification());
     }
 
