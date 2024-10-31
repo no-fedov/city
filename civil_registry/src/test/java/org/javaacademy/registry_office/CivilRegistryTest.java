@@ -191,7 +191,7 @@ public class CivilRegistryTest {
         LocalDate date = LocalDate.of(2000, 1, 1);
         civilRegistry.getStatistic(date);
         Assertions.assertEquals("\"Статистика по ЗАГС: Тестовый ЗАГС\n"
-               + "\"Дата 2000-01-01: количество свадеб - 0, количество разводов - 0, количество рождений - 0\"",
+               + "Дата 2000/01/01: количество свадеб - 0, количество разводов - 0, количество рождений - 0\"",
                 outputStream.toString().trim());
     }
 }
