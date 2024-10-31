@@ -27,6 +27,9 @@
         <maven-checkstyle-plugin.version>3.5.0</maven-checkstyle-plugin.version>
         <checkstyle.version>10.14.1</checkstyle.version>
         <maven.assembly.version>3.7.1</maven.assembly.version>
+        <jacoco.plugin.version>0.8.11</jacoco.plugin.version>
+        <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
+        <junit.jupiter.version>5.10.3</junit.jupiter.version>
     </properties>
 
     <build>
