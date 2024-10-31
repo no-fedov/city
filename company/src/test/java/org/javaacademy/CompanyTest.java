@@ -1,8 +1,6 @@
+package org.javaacademy;
+
 import lombok.SneakyThrows;
-import org.javaacademy.Company;
-import org.javaacademy.Manager;
-import org.javaacademy.Programmer;
-import org.javaacademy.Task;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
