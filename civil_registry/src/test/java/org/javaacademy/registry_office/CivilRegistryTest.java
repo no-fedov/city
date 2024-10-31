@@ -187,11 +187,25 @@ public class CivilRegistryTest {
 
     @Test
     @DisplayName("Получение статистики за дату, когда не было регистраций событий")
-    public void getStatisticSuccess() {
+    public void getNothingStatisticSuccess() {
         LocalDate date = LocalDate.of(2000, 1, 1);
         civilRegistry.getStatistic(date);
         Assertions.assertEquals("\"Статистика по ЗАГС: Тестовый ЗАГС\n"
                + "Дата 2000/01/01: количество свадеб - 0, количество разводов - 0, количество рождений - 0\"",
+                outputStream.toString().trim());
+    }
+
+    @Test
+    @DisplayName("Получение статистики за дату, когда было событие")
+    public void getStatisticSuccess() {
+        LocalDate date = LocalDate.of(2000, 1, 1);
+        Citizen citizen1 = new Citizen("Вениамин", "Иванов", "Иванович", true);
+        Citizen citizen2 = new Citizen("Анна", "Иванова", "Ивановна", false);
+        civilRegistry.registrationWedding(citizen1, citizen2, date);
+
+        civilRegistry.getStatistic(date);
+        Assertions.assertEquals("\"Статистика по ЗАГС: Тестовый ЗАГС\n"
+                        + "Дата 2000/01/01: количество свадеб - 1, количество разводов - 0, количество рождений - 0\"",
                 outputStream.toString().trim());
     }
 }

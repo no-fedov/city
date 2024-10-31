@@ -1,6 +1,5 @@
 package org.javaacademy.citizen;
 
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
