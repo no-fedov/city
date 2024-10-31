@@ -18,28 +18,25 @@ public class CitizenTest {
     @Test
     @DisplayName("Неуспешное создание гражданина, null в имени")
     public void createCitizenWithNullName() {
-        Assertions.assertThrows(NullPointerException.class, () -> new Citizen(null,
-                "Вася",
-                "Вася",
-                true));
+        NullPointerException exception = Assertions.assertThrows(NullPointerException.class,
+                () -> new Citizen(null, "Вася", "Вася", true));
+        Assertions.assertEquals("name is marked non-null but is null", exception.getMessage());
     }
 
     @Test
     @DisplayName("Неуспешное создание гражданина, null в фамилии")
     public void createCitizenWithNullFemale() {
-        Assertions.assertThrows(NullPointerException.class, () -> new Citizen("Вася",
-                null,
-                "Вася",
-                true));
+        NullPointerException exception = Assertions.assertThrows(NullPointerException.class,
+                () -> new Citizen("Вася", null, "Вася", true));
+        Assertions.assertEquals("surname is marked non-null but is null", exception.getMessage());
     }
 
     @Test
     @DisplayName("Неуспешное создание гражданина, null в отчестве")
     public void createCitizenWithNullPatronymic() {
-        Assertions.assertThrows(NullPointerException.class, () -> new Citizen("Вася",
-                "Вася",
-                null,
-                true));
+        NullPointerException exception = Assertions.assertThrows(NullPointerException.class,
+                () -> new Citizen("Вася", "Вася", null, true));
+        Assertions.assertEquals("patronymic is marked non-null but is null", exception.getMessage());
     }
 
     @Test
