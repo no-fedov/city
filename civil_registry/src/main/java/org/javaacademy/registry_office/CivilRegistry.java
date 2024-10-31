@@ -1,8 +1,10 @@
 package org.javaacademy.registry_office;
 
 import lombok.NonNull;
+import org.javaacademy.HumanUtil;
 import org.javaacademy.citizen.Citizen;
 import org.javaacademy.citizen.MaritalStatus;
+import org.javaacademy.util.CivilUtil;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,15 +12,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static org.javaacademy.HumanUtil.*;
 import static org.javaacademy.citizen.MaritalStatus.DIVORCED;
 import static org.javaacademy.citizen.MaritalStatus.MARRIED;
-import static org.javaacademy.registry_office.TypeCivilAction.*;
-import static org.javaacademy.util.CivilUtil.*;
+import static org.javaacademy.registry_office.TypeCivilAction.BIRTH_REGISTRATION;
+import static org.javaacademy.registry_office.TypeCivilAction.DIVORCE_REGISTRATION;
+import static org.javaacademy.registry_office.TypeCivilAction.WEDDING_REGISTRATION;
 
 public class CivilRegistry {
-    private static final String statisticPattern = "\"Статистика по ЗАГС: %s\n" +
-            "\"Дата %s: количество свадеб - %d, количество разводов - %d, количество рождений - %d\"\n";
+    private static final String STATISTIC_TEMPLATE = "\"Статистика по ЗАГС: %s\n"
+            + "\"Дата %s: количество свадеб - %d, количество разводов - %d, количество рождений - %d\"\n";
 
     private String registryOfficeName;
     private Map<LocalDate, List<CivilActionRecord>> sortedRecordsByDate;
@@ -32,7 +34,7 @@ public class CivilRegistry {
                            @NonNull Citizen firstCitizen,
                            @NonNull Citizen secondCitizen,
                            @NonNull LocalDate date) {
-        genderOppositeCheck(firstCitizen, secondCitizen);
+        HumanUtil.genderOppositeCheck(firstCitizen, secondCitizen);
         if (!firstCitizen.getChildren().contains(child)
                 || !secondCitizen.getChildren().contains(child)) {
             throw new RuntimeException("Нельзя зарегистрировать чужого ребенка");
@@ -43,7 +45,7 @@ public class CivilRegistry {
     public void registrationWedding(@NonNull Citizen firstCitizen,
                                     @NonNull Citizen secondCitizen,
                                     @NonNull LocalDate date) {
-        genderOppositeCheck(firstCitizen, secondCitizen);
+        HumanUtil.genderOppositeCheck(firstCitizen, secondCitizen);
         if (firstCitizen.getSpouse() != null || secondCitizen.getSpouse() != null) {
             throw new RuntimeException("Нельзя дважды зарегистрировать брак");
         }
@@ -54,7 +56,7 @@ public class CivilRegistry {
     public void registrationDivorce(@NonNull Citizen firstCitizen,
                                     @NonNull Citizen secondCitizen,
                                     @NonNull LocalDate date) {
-        genderOppositeCheck(firstCitizen, secondCitizen);
+        HumanUtil.genderOppositeCheck(firstCitizen, secondCitizen);
         if (firstCitizen.getMaritalStatus() != MARRIED
                 || secondCitizen.getMaritalStatus() != MARRIED
                 || firstCitizen.getSpouse() == null
@@ -74,15 +76,15 @@ public class CivilRegistry {
             return;
         }
 
-        long countWedding = countType(recordsWithFindDate, WEDDING_REGISTRATION);
-        long countDivorce = countType(recordsWithFindDate, DIVORCE_REGISTRATION);
-        long countBirth = countType(recordsWithFindDate, BIRTH_REGISTRATION);
+        long countWedding = CivilUtil.countType(recordsWithFindDate, WEDDING_REGISTRATION);
+        long countDivorce = CivilUtil.countType(recordsWithFindDate, DIVORCE_REGISTRATION);
+        long countBirth = CivilUtil.countType(recordsWithFindDate, BIRTH_REGISTRATION);
 
         printStatistic(findDate, countWedding, countDivorce, countBirth);
     }
 
     private void printStatistic(LocalDate date, long countWedding, long countDivorce, long countBirth) {
-        System.out.printf(statisticPattern,
+        System.out.printf(STATISTIC_TEMPLATE,
                 this.registryOfficeName,
                 date,
                 countWedding, countDivorce, countBirth);

@@ -7,10 +7,14 @@ import java.time.LocalDate;
 import java.util.Arrays;
 
 public class RunnerProm {
+    private static final int YEAR = 2000;
+    private static final int MONTH = 1;
+    private static final int DAY = 10;
+
     public static void main(String[] args) {
         String nameCivilRegistry = Arrays.toString(args);
         CivilRegistry civilRegistry = new CivilRegistry(nameCivilRegistry);
-        LocalDate date = LocalDate.of(2000, 1, 10);
+        LocalDate date = LocalDate.of(YEAR, MONTH, DAY);
 
         Citizen citizen1 = new Citizen("Вениамин", "Иванов", "Иванович", true);
         Citizen citizen2 = new Citizen("Анна", "Иванова", "Ивановна", false);
