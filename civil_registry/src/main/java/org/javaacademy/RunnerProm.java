@@ -4,7 +4,6 @@ import org.javaacademy.citizen.Citizen;
 import org.javaacademy.registry_office.CivilRegistry;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 
 public class RunnerProm {
     private static final int YEAR = 2000;
@@ -12,7 +11,7 @@ public class RunnerProm {
     private static final int DAY = 10;
 
     public static void main(String[] args) {
-        String nameCivilRegistry = Arrays.toString(args);
+        String nameCivilRegistry = args[0];
         CivilRegistry civilRegistry = new CivilRegistry(nameCivilRegistry);
         LocalDate date = LocalDate.of(YEAR, MONTH, DAY);
 

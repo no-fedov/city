@@ -1,12 +1,38 @@
-import org.javaacademy.*;
+import lombok.SneakyThrows;
+import org.javaacademy.Company;
+import org.javaacademy.Manager;
+import org.javaacademy.Programmer;
+import org.javaacademy.Task;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class CompanyTest {
+    private ByteArrayOutputStream outputStream;
+    private final PrintStream originalOut = System.out;
+
+    @BeforeEach
+    public void setup() {
+        outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+    }
+
+    @AfterEach
+    @SneakyThrows
+    void tearDown() {
+        System.setOut(originalOut);
+        outputStream.close();
+    }
 
     @Test
     @DisplayName("Успешное выполнение задач")
@@ -74,5 +100,17 @@ public class CompanyTest {
         BigDecimal result = company.getExpenses().setScale(2);
 
         Assertions.assertEquals(expected, result);
+    }
+
+    @Test
+    @DisplayName("Получение статистики компании")
+    public void getStatistic() {
+        Company company = new Company("Oracle",
+                new Manager("1", "2", "3", false),
+                Set.of(),
+                BigDecimal.valueOf(2000));
+        company.info();
+        Assertions.assertEquals("[Oracle]\nЗатраты: [0.00]\nСписок выполненных задач у компании:",
+                outputStream.toString().trim());
     }
 }

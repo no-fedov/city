@@ -5,6 +5,7 @@ import org.javaacademy.HumanUtil;
 import org.javaacademy.citizen.Citizen;
 import org.javaacademy.citizen.MaritalStatus;
 import org.javaacademy.util.CivilUtil;
+import org.javaacademy.util.DateFormatter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import static org.javaacademy.registry_office.TypeCivilAction.WEDDING_REGISTRATI
 
 public class CivilRegistry {
     private static final String STATISTIC_TEMPLATE = "\"Статистика по ЗАГС: %s\n"
-            + "\"Дата %s: количество свадеб - %d, количество разводов - %d, количество рождений - %d\"\n";
+            + "Дата %s: количество свадеб - %d, количество разводов - %d, количество рождений - %d\"\n";
 
     private String registryOfficeName;
     private Map<LocalDate, List<CivilActionRecord>> sortedRecordsByDate;
@@ -86,7 +87,7 @@ public class CivilRegistry {
     private void printStatistic(LocalDate date, long countWedding, long countDivorce, long countBirth) {
         System.out.printf(STATISTIC_TEMPLATE,
                 this.registryOfficeName,
-                date,
+                DateFormatter.formatDate(date),
                 countWedding, countDivorce, countBirth);
     }
 
