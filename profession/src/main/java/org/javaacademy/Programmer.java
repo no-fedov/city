@@ -24,7 +24,7 @@ public class Programmer extends Employee {
     @Override
     public void setRate(@NonNull BigDecimal rate) {
         checkValidateRate(expectValidate -> expectValidate.compareTo(MIN_RATE) >= 0, rate);
-        checkValidateRate(expectValidate -> expectValidate.compareTo(MAX_RATE) < 0, rate);
+        checkValidateRate(expectValidate -> expectValidate.compareTo(MAX_RATE) <= 0, rate);
         this.rate = rate;
     }
 
